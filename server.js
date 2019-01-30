@@ -9,14 +9,21 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
+// const postgrespassword = require('./keys/password');
+
+// const db = knex({
+//   client: 'pg',
+//   connection: {
+//     host : '127.0.0.1',
+//     user : 'winwab1',
+//     password: postgrespassword.postgrespassword,
+//     database : 'smart-brain'
+//   }
+// });
+
 const db = knex({
   client: 'pg',
-  connection: {
-    host : '127.0.0.1',
-    user : 'aneagoie',
-    password : '',
-    database : 'smart-brain'
-  }
+  connection: process.env.POSTGRES_URI
 });
 
 const app = express();
@@ -24,7 +31,9 @@ const app = express();
 app.use(cors())
 app.use(bodyParser.json());
 
-app.get('/', (req, res)=> { res.send(database.users) })
+// app.get('/', (req, res)=> { res.send(database.users) })
+app.get('/', (req, res) => { res.send("IT IS WORKING") })
+
 app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db)})
